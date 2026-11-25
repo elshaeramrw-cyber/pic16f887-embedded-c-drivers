@@ -1,0 +1,41 @@
+sbit LCD_RS at RC0_bit;
+sbit LCD_EN at RC1_bit;
+sbit LCD_D4 at RC2_bit;
+sbit LCD_D5 at RC3_bit;
+sbit LCD_D6 at RC4_bit;
+sbit LCD_D7 at RC5_bit;
+sbit LCD_RS_DIRECTION at TRISC0_bit;
+sbit LCD_EN_DIRECTION at TRISC1_bit;
+sbit LCD_D4_DIRECTION at TRISC2_bit;
+sbit LCD_D5_DIRECTION at TRISC3_bit;
+sbit LCD_D6_DIRECTION at TRISC4_bit;
+sbit LCD_D7_DIRECTION at TRISC5_bit;
+void main() {
+ unsigned char x[]={'0','1','2','3','4','5','6','7','8','9'};
+ unsigned int i=0;
+ int o=0;
+ int t=0;
+ int a=0;
+ ansel=0x02;
+ anselh=0;
+ trisC=0;
+ trisA=0XFF;
+ portC=0;
+ portA=0;
+ lcd_init();
+ ADC_init();
+ LCD_CMD(_LCD_CURSOR_OFF);
+ while(1){
+ LCD_CMD(_LCD_CLEAR);
+ i=ADC_READ(1);
+ i=(i*5000/1023);
+ t=i/1000;
+ o=(i%1000)/100;
+ a=(i%100)/10;
+ LCD_OUT(1,1,"voltage=");
+ LCD_OUT(1,9,x[t]);
+ LCD_OUT(1,10,x[o]);
+ LCD_OUT(1,11,'.');
+ LCD_OUT(1,12,x[a]);
+ delay_ms(1000);
+} }
